@@ -41,7 +41,8 @@ if (interface == 1) {
 let clase = prompt("Ingrese qué tipo de artículo desea ingresar: \n1_Equipo \n2_Repuesto");
 
 if (clase == 2){
-    crearRepuesto();
+    let repuesto = crearRepuesto();
+    imprimir(repuesto.nombre);
 }
 else if (clase == 1){
     crearEquipo();
@@ -59,6 +60,17 @@ function familiaRepuestos (){
     return repuestos;
 }
 
+function familiaEquipos (){
+    let cantidad = prompt("Cuantos equipos va a ingresar?");
+    let i = 0;
+    let equipos = [];
+    while (cantidad > i) {
+        equipos[i] = prompt("Ingrese el nombre del equipo");
+        i++;
+    }
+    return equipos;
+}
+
 function crearEquipo(){
     this.nombre = prompt("Nombre");
     this.marca = prompt("Marca");
@@ -69,11 +81,25 @@ function crearEquipo(){
 
 function crearRepuesto(){
     this.nombre = prompt("Nombre");
-    this.esOriginal = prompt("Nombre");
-    this.originales = prompt("Nombre");
-    this.copias = prompt("Nombre");
-    this.alternativos = prompt("Nombre");
-    this.alternativoDe = prompt("Nombre");
-    this.equipos = prompt("nombre");
+    this.esOriginal = prompt("Es original: \n1_Sí \n2_No");
+    if(esOriginal == 2){
+        imprimir("Ingresara los repuestos originales");
+        this.originales = familiaRepuestos();
+        this.copias = [];
+    }
+    else if(esOriginal == 1){
+        imprimir("Ingresara los repuestos copias");
+        this.copias = familiaRepuestos();
+        this.originales = [];
+    }
+    
+    imprimir("Ingresara los repuestos alternativos compatibles con este modelo");
+    this.alternativos = familiaRepuestos();
+    
+    imprimir("Ingresara los repuestos a los cuales puede reemplazar");
+    this.alternativoDe = familiaRepuestos();
+    
+    imprimir("Ingresara los equipos en donde va colocado");
+    this.equipos = familiaEquipos();
     return new Repuesto(nombre, esOriginal, originales, copias, alternativos, alternativoDe, equipos);
 }
