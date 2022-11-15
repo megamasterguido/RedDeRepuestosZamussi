@@ -170,23 +170,23 @@ function imprimirRepuesto(repuesto){
     imprimir("Codigo: " + repuesto.codigo);
     imprimir("Nombre: " + repuesto.nombre);
 
-    let alternativos = concatenarArticulos(repuesto.alternativos);
+    let alternativos = repuesto.alternativos.join(", ");
     imprimir("Alternativos: " + alternativos);
     
-    let alternativoDe = concatenarArticulos(repuesto.alternativoDe);
+    let alternativoDe = repuesto.alternativoDe.join(", ");
     imprimir("Alternativo de: " + alternativoDe);
     
-    let equipos = concatenarArticulos(repuesto.equipos);
+    let equipos = repuesto.equipos.join(", ");
     imprimir("Equipos en los que va colocado: " + equipos);
 
     if(repuesto.esOriginal == 1){
         imprimir("Original: Si");
-        let copias = concatenarArticulos(repuesto.copias);
+        let copias = repuesto.copias.join(", ");
         imprimir("Copias: " + copias);
     }
     else if(repuesto.esOriginal == 2){
         imprimir("Original: No");
-        let originales = concatenarArticulos(repuesto.originales);
+        let originales = repuesto.originales.join(", ");
         imprimir("Originales: " + originales);
     }
 }
@@ -197,7 +197,7 @@ function imprimirEquipos(equipo){
     imprimir("Marca: " + equipo.marca);
     imprimir("Fabrica: " + equipo.fabrica);
 
-    let repuestos = concatenarArticulos(equipo.repuestos);
+    let repuestos = equipo.repuestos.join(", ");
     imprimir("Repuestos: " + repuestos);
 }
 
@@ -219,11 +219,11 @@ while(flag == 1){
     let clase = prompt("Ingrese qué tipo de artículo desea ingresar: \n1_Equipo \n2_Repuesto");
 
     if (clase == 2){
-        listaRepuestos[contadorRepuestos] = crearRepuesto();
+        listaRepuestos.push(crearRepuesto());
         contadorRepuestos++;
     }
     else if (clase == 1){
-        listaEquipos[contadorEquipos] = crearEquipo();
+        listaEquipos.push(crearEquipo());
         contadorEquipos++;
     }
     else imprimir("Ingreso no valido")
