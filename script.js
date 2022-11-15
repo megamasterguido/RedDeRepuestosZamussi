@@ -1,8 +1,3 @@
-/*let prueba = [];
-prueba[0] = prompt("Prueba con espacios");
-console.log(prueba[0]);
-alert(prueba[0]);*/
-
 class Equipo{
     constructor(codigo, nombre, marca, fabrica, repuestos){
         this.codigo = codigo;
@@ -31,7 +26,7 @@ let listaEquipos = [];
 
 function imprimir(texto){
     if(interface == 1){
-        console.log(texto);
+        console.log(String(texto));
     }
     else if (interface == 2){
         alert(texto);
@@ -93,12 +88,12 @@ function crearEquipo(){
         this.codigo = "Sin Codigo";
     }
 
-    return new Equipo(nombre, marca, fabrica, repuestos, codigo);
+    return new Equipo(codigo, nombre, marca, fabrica, repuestos);
 }
 
 function crearRepuesto(){
     let llamarIngreso = 0;
-    this.codigo = prompt("Ingrese el CODIGO del articulo")
+    this.codigo = prompt("Ingrese el CODIGO del articulo");
     this.nombre = prompt("Ingrese el NOMBRE del articulo");
     this.esOriginal = prompt("Es original: \n1_Sí \n2_No");
     if(esOriginal == 2){
@@ -159,20 +154,20 @@ function concatenarArticulos (articulos){
 
     let resp = "";
 
-    let i = articulos.length;
+    let i = articulos.length - 1;
 
-    while(i > 0){
-        resp += articulos[i];
+    while(i >= 0){
+        resp = resp.concat(articulos[i]);
         i--;
-        if(i > 1){
-            resp += ", ";
+        if(i >= 0){
+            resp = resp.concat(", ");
         }
     }
     return resp;
 }
 
 function imprimirRepuesto(repuesto){
-    imprimir("Codigo: " + repuesto.condigo);
+    imprimir("Codigo: " + repuesto.codigo);
     imprimir("Nombre: " + repuesto.nombre);
 
     let alternativos = concatenarArticulos(repuesto.alternativos);
@@ -191,9 +186,19 @@ function imprimirRepuesto(repuesto){
     }
     else if(repuesto.esOriginal == 2){
         imprimir("Original: No");
-        let copias = concatenarArticulos(repuesto.originales);
-        imprimir("Originales: " + copias);
+        let originales = concatenarArticulos(repuesto.originales);
+        imprimir("Originales: " + originales);
     }
+}
+
+function imprimirEquipos(equipo){
+    imprimir("Codigo: " + equipo.codigo);
+    imprimir("Nombre: " + equipo.nombre);
+    imprimir("Marca: " + equipo.marca);
+    imprimir("Fabrica: " + equipo.fabrica);
+
+    let repuestos = concatenarArticulos(equipo.repuestos);
+    imprimir("Repuestos: " + repuestos);
 }
 
 let flag = prompt("Ingrese 1 si desea ingresar un articulo o cualquier cosa en caso contrario")
@@ -239,5 +244,5 @@ if(contadorEquipos == 0){
 }
 else{
     imprimir("Se han ingresado " + contadorEquipos + " equipos:");
-    listaEquipos.forEach(equipo => imprimir(equipo.nombre));
+    listaEquipos.forEach(equipo => imprimirEquipos(equipo));
 }
