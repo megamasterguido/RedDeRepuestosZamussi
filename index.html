@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Inicio</title>
 </head>
 <body>
-    <main>
+    <div id="instrucciones">
         <h1>
             Instrucciones
         </h1>
@@ -24,6 +25,46 @@
             en caso de ser original, puede indicar las copias, y en ambos casos puede indicar alternativos y de los cuales es el
             alternativo. Luego, puede indicar los parientes de éste.
         </p>
+    </div>
+    <main>
+        <form id="carga" name="cargaManual">
+            <div id="inicio">
+                <label for="tipoArticulo"> Seleccione el tipo de articulo a ingresar </label>
+                <select name="tipo" id="tipoArticulo" form="carga">
+                    <option value="Repuesto">Repuesto</option>
+                    <option value="Electrodomestico">Electrodomestico</option>
+                </select>
+            </div>
+            <fieldset id="formulario">
+                <!-- <label for="nombre">Nombre del repuesto</label>
+                <input type="nombre" id="nombre"><br>
+                <label for="fabricante">fabricante del repuesto</label>
+                <input type="fabricante" id="fabricante"><br>
+                <label for="codigo">codigo del repuesto</label>
+                <input type="codigo" id="codigo"><br>
+                <label for="esOriginal"> Es original </label>
+                <select name="esOriginal" id="esOriginal" form="formulario">
+                    <option value='1'> Si </option>
+                    <option value='0'> No </option>
+                </select><br>
+                <button type="button" id="agregarCopia">Agregar Copia</button><br>
+                <label for="copia1">Introduzca el codigo de la copia</label>
+                <input type="copia" id="copia1"><br>
+                <button type="button" id="agregarOriginal">Agregar Original</button><br>
+                <label for="original">Introduzca el codigo del repuesto original</label>
+                <input type="original" id="original"><br>
+                <button type="button" id="agregarAlternativo">Agregar alternativo</button><br>
+                <label for="alternativo1">Introduzca el codigo del alternativo</label>
+                <input type="alternativo" id="alternativo1"><br>
+                <button type="button" id="agregarReemplazo">Agregar a cual reemplazo</button><br>
+                <label for="reemplazo1">Introduzca el codigo del reemplazo</label>
+                <input type="reemplazo" id="reemplazo1"><br>
+                <button type="button" id="agregarEquipo">Agregar equipo en el que va puesto</button><br>
+                <label for="equipo1">Introduzca el nombre del equipo en el cual va colocado</label>
+                <input type="equipo" id="equipo1"><br>-->
+
+            </fieldset>
+        </form>
     </main>
     <script src="script.js"></script>
 </body>

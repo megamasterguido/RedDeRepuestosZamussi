@@ -1,0 +1,19 @@
+body{
+    display: grid;
+    grid-template-areas: 
+    "ins"
+    "ini"
+    "form";
+}
+
+#instrucciones{
+    grid-area: ins;
+}
+
+#formulario{
+    grid-area: form;
+}
+
+#inicio{
+    grid-area: ini;
+}

@@ -9,15 +9,16 @@ class Equipo{
 }
 
 class Repuesto{
-    constructor(nombre, esOriginal, originales, copias, alternativos, alternativoDe, equipos, codigo){
+    constructor(nombre, fabricante, codigo, esOriginal, originales, copias, alternativos, alternativoDe, equipos){
         this.nombre = nombre;
+        this.fabricante = fabricante;
+        this.codigo = codigo;
         this.esOriginal = esOriginal;
         this.originales = originales;
         this.copias = copias;
         this.alternativos = alternativos;
         this.alternativoDe = alternativoDe;
         this.equipos = equipos;
-        this.codigo = codigo;
     }
 }
 
@@ -32,7 +33,7 @@ function imprimir(texto){
         alert(texto);
     }
 }
-
+/*
 function familiaRepuestos (){
     let flag = 1;
     let i = 0;
@@ -66,7 +67,7 @@ function familiaEquipos (){
     }
     return equipos;
 }
-
+*/
 function crearEquipo(){
     this.nombre = prompt("Nombre");
     this.marca = prompt("Marca");
@@ -201,8 +202,8 @@ function imprimirEquipos(equipo){
     imprimir("Repuestos: " + repuestos);
 }
 
-let flag = prompt("Ingrese 1 si desea ingresar un articulo o cualquier cosa en caso contrario")
-let interface = prompt("Ingrese cómo desea continuar: \n_Ingrese 1 para continuar por consola\n_Ingrese 2 para continuar por cuadros de diálogo.");
+//let flag = prompt("Ingrese 1 si desea ingresar un articulo o cualquier cosa en caso contrario")
+let interface = 1; //prompt("Ingrese cómo desea continuar: \n_Ingrese 1 para continuar por consola\n_Ingrese 2 para continuar por cuadros de diálogo.");
 
 if (interface == 1) {
     imprimir("Ha elegido proceder por consola");
@@ -215,6 +216,8 @@ if (interface == 1) {
 let contadorRepuestos = 0;
 let contadorEquipos = 0;
 
+
+/*
 while(flag == 1){
     let clase = prompt("Ingrese qué tipo de artículo desea ingresar: \n1_Equipo \n2_Repuesto");
 
@@ -230,7 +233,194 @@ while(flag == 1){
 
     flag = prompt("Ingrese 1 si desea continuar o cualquier otra cosa para terminar.")
 }
+*/
 
+let formulario = document.getElementById('formulario');
+
+let tipo = document.getElementById("tipoArticulo");
+
+let cantidadCopias = 0;
+let cantidadOriginales = 0;
+let cantidadAlternativos = 0;
+let cantidadReemplazos = 0;
+let cantidadEquipos = 0;
+
+function agregarCopias(){
+    let copia = document.createElement("input");
+    let copiaLabel = document.createElement("label");
+    copiaLabel.innerText = "Introduzca el codigo o el nombre de la copia";
+    copia.id = "copia" + cantidadCopias;
+    copia.type = "copia";
+    copiaLabel.htmlFor = copia.id;
+    let familiaCopia = document.getElementById("familiaCopia");
+    let salto = document.createElement('br');
+
+    familiaCopia.append(copiaLabel);
+    familiaCopia.append(copia);
+    familiaCopia.append(salto);
+    cantidadCopias++;
+}
+
+function agregarOriginales(){
+
+    let original = document.createElement("input");
+    let originalLabel = document.createElement("label");
+    originalLabel.innerText = "Introduzca el codigo o el nombre del original";
+    original.id = "original" + cantidadOriginales;
+    original.type = "original";
+    originalLabel.htmlFor = original.id;
+
+    let familiaOriginales = document.getElementById("familiaOriginales");
+    let salto = document.createElement('br');
+
+    familiaOriginales.append(originalLabel);
+    familiaOriginales.append(original);
+    familiaOriginales.append(salto);
+    cantidadOriginales++;
+}
+
+function familiaOriginalCopias(){
+    let existeFamiliaCopia = document.getElementById("familiaCopia");
+    let existeOriginal = document.getElementById("familiaOriginales");
+
+    if(document.getElementById("esOriginal").value == '1'){
+        if(existeOriginal){
+            existeOriginal.remove();
+            cantidadCopias  = 0;
+            cantidadOriginales = 0;
+        }
+
+        let familiaCopia = document.createElement("fieldset");
+        familiaCopia.id = "familiaCopia";
+        familiaCopia.innerHTML = `<button type="button" id="agregarCopia">Agregar Copia</button><br>`;
+        formulario.append(familiaCopia);
+
+        let agregarCopia = document.getElementById("agregarCopia");
+        agregarCopia.addEventListener("click", agregarCopias);
+    }
+
+    else{
+        if(existeFamiliaCopia){
+            existeFamiliaCopia.remove();
+            cantidadCopias  = 0;
+            cantidadOriginales = 0;
+        }
+        let familiaOriginales = document.createElement("fieldset");
+        familiaOriginales.id = "familiaOriginales";
+        familiaOriginales.innerHTML = `<button type="button" id="agregarOriginal">Agregar Original</button><br>`;
+        formulario.append(familiaOriginales);
+
+        let agregarOriginal = document.getElementById("agregarOriginal");
+        agregarOriginal.addEventListener("click", agregarOriginales);
+    }
+}
+
+function agregarAlternativos(){
+
+    let alternativo = document.createElement("input");
+    let alternativoLabel = document.createElement("label");
+    alternativoLabel.innerText = "Introduzca el codigo o el nombre del repuesto alternativo";
+    alternativo.id = "alternativo" + cantidadAlternativos;
+    alternativo.type = "alternativo";
+    alternativoLabel.htmlFor = alternativo.id;
+
+    let familiaAlternativos = document.getElementById("familiaAlternativos");
+    let salto = document.createElement('br');
+
+    familiaAlternativos.append(alternativoLabel);
+    familiaAlternativos.append(alternativo);
+    familiaAlternativos.append(salto);
+    cantidadAlternativos++;
+}
+
+function agregarReemplazos(){
+
+    let reemplazo = document.createElement("input");
+    let reemplazoLabel = document.createElement("label");
+    reemplazoLabel.innerText = "Introduzca el codigo o el nombre del repuesto al que reemplaza";
+    reemplazo.id = "reemplazo" + cantidadReemplazos;
+    reemplazo.type = "reemplazo";
+    reemplazoLabel.htmlFor = reemplazo.id;
+
+    let familiaReemplazos = document.getElementById("familiaReemplazos");
+    let salto = document.createElement('br');
+
+    familiaReemplazos.append(reemplazoLabel);
+    familiaReemplazos.append(reemplazo);
+    familiaReemplazos.append(salto);
+    cantidadReemplazos++;
+}
+
+function agregarEquipos(){
+
+    let equipo = document.createElement("input");
+    let equipoLabel = document.createElement("label");
+    equipoLabel.innerText = "Introduzca el codigo o el nombre del equipo en el cual va puesto";
+    equipo.id = "reemplazo" + cantidadReemplazos;
+    equipo.type = "reemplazo";
+    equipoLabel.htmlFor = equipo.id;
+
+    let familiaEquipos = document.getElementById("familiaEquipos");
+    let salto = document.createElement('br');
+
+    familiaEquipos.append(equipoLabel);
+    familiaEquipos.append(equipo);
+    familiaEquipos.append(salto);
+    cantidadEquipos++;
+}
+
+function generarFormulario(){
+    if (tipo.value == "Repuesto"){
+        formulario.innerHTML = `<label for="nombre">Nombre del repuesto</label>
+        <input type="nombre" id="nombre"><br>
+        <label for="fabricante">Fabricante del repuesto</label>
+        <input type="fabricante" id="fabricante"><br>
+        <label for="codigo">Codigo del repuesto</label>
+        <input type="codigo" id="codigo"><br>
+        <label for="esOriginal"> Es original </label>
+        <select name="esOriginal" id="esOriginal" form="formulario">
+            <option value=1> Si </option>
+            <option value=0> No </option>
+        </select><br>`;
+        
+        familiaOriginalCopias();
+        document.getElementById("esOriginal").addEventListener("change", familiaOriginalCopias);
+
+        let familiaAlternativos = document.createElement("fieldset");
+        familiaAlternativos.id = "familiaAlternativos";
+        familiaAlternativos.innerHTML = `<button type="button" id="agregarAlternativo">Agregar alternativo</button><br>`;
+        formulario.append(familiaAlternativos);
+
+        let agregarAlternativo = document.getElementById("agregarAlternativo");
+        agregarAlternativo.addEventListener("click", agregarAlternativos);
+
+        
+        let familiaReemplazos = document.createElement("fieldset");
+        familiaReemplazos.id = "familiaReemplazos";
+        familiaReemplazos.innerHTML = `<button type="button" id="agregarReemplazo">Agregar reemplazo</button><br>`;
+        formulario.append(familiaReemplazos);
+
+        let agregarReemplazo = document.getElementById("agregarReemplazo");
+        agregarReemplazo.addEventListener("click", agregarReemplazos);
+        
+        let familiaEquipos = document.createElement("fieldset");
+        familiaEquipos.id = "familiaEquipos";
+        familiaEquipos.innerHTML = `<button type="button" id="agregarEquipo">Agregar equipo</button><br>`;
+        formulario.append(familiaEquipos);
+
+        let agregarEquipo = document.getElementById("agregarEquipo");
+        agregarEquipo.addEventListener("click", agregarEquipos);
+
+    }
+    else {
+        formulario.innerHTML = `<label for="nombre">Nombre del electrodomestico</label><input type="nombre" id="nombre">`;
+    }
+}
+
+generarFormulario();
+tipo.addEventListener("change", generarFormulario);
+
+/*
 if(contadorRepuestos == 0){
     imprimir("No se han ingresado repuestos.");
 }
@@ -246,3 +436,4 @@ else{
     imprimir("Se han ingresado " + contadorEquipos + " equipos:");
     listaEquipos.forEach(equipo => imprimirEquipos(equipo));
 }
+*/
