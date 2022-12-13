@@ -1,19 +1,81 @@
 body{
-    display: grid;
-    grid-template-areas: 
-    "ins"
-    "ini"
-    "form";
-}
-
-#instrucciones{
-    grid-area: ins;
+    padding: 0;
 }
 
 #formulario{
-    grid-area: form;
+    display: grid;
+    grid-template-areas: 
+    "cabeza"
+    "original"
+    "alternativo"
+    "reemplazo"
+    "equipo";
 }
 
-#inicio{
-    grid-area: ini;
+#formulario fieldset div{
+    display: grid;
+    grid-template-columns:  38vw 53vw 2vw;
+}
+
+#formulario button{
+    width: 12vw;
+    height: 3vw;
+}
+
+#formulario div input{
+    width: 40vw;
+    height: 2vw;
+    margin-left: 12vw;
+}
+
+#formulario div button{
+    width: 2vw;
+    height: 2vw;
+    margin-left: 0.5vw;
+}
+
+#botones{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#botones button{
+    width: 15vw;
+    height: 4vw;
+    display: block;
+}
+
+#familiaCopia{
+    grid-area: original;
+}
+
+#familiaOriginales{
+    grid-area: original;
+}
+
+#familiaAlternativos{
+    grid-area: alternativo;
+}
+
+#familiaReemplazos{
+    grid-area: reemplazo;
+}
+
+#familiaEquipos{
+    grid-area: equipo;
+}
+
+#cabeza{
+    grid-area: cabeza;
+}
+
+.bloqueForm{
+    display: flex;
+    justify-content: space-between;
+}
+
+#cabeza select{
+    width: 5vw;
+    height: 2vw;
+    margin-right: 20vw;
 }
