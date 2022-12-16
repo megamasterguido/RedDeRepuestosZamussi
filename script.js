@@ -315,7 +315,7 @@ function generarFormulario(){
     else {
         formulario.innerHTML = `<div class="bloqueForm"><label for="codigo" id="codigoLabel">Codigo</label>
         <input type="codigo" id="codigo"></div>
-        <div class="bloqueForm"><label for="nombre">Nombre*</label>
+        <div class="bloqueForm"><label for="nombre" id="nombreLabel">Nombre*</label>
         <input type="nombre" id="nombre"></div>
         <div class="bloqueForm"><label for="fabrica">Fabrica</label>
         <input type="fabrica" id="fabrica"></div>
@@ -341,13 +341,13 @@ guardarBoton.addEventListener("click", guardarSession);
 
 function validarGuardar(){
     let flag = 0;
-    if(document.getElementById("nombre") == null){
-        document.getElementById("nombreLabel").style.textDecoration = "red underline overline";
+    if(document.getElementById("nombre").value == ''){
+        document.getElementById("nombreLabel").style.textDecoration = "red underline wavy";
         flag = 1;
     }
     if(tipo.value == "Repuesto"){
-        if(document.getElementById("codigo") == null){
-            document.getElementById("codigoLabel").style.textDecoration = "red underline overline";
+        if(document.getElementById("codigo").value == ''){
+            document.getElementById("codigoLabel").style.textDecoration = "red underline wavy";
             flag = 1;
         }
     }
@@ -357,9 +357,45 @@ function validarGuardar(){
             text:`Debe completar los campos que posean un '*'.
             Complete los campos subrayados en rojo para proseguir.`});
     }
+
+    return flag;
+}
+
+function validadRepetidos(){
+    let flag = 0;
+
+    let cod = document.getElementById("codigo").value;
+    let nom = document.getElementById("nombre").value;
+    
+    let largo = sessionStorage.length;
+
+    for(let i = 0; i < largo && flag == 0; i++){
+        (JSON.parse(sessionStorage.getItem(sessionStorage.key(i))).codigo == cod) ? flag = 1: flag = flag;
+        (JSON.parse(sessionStorage.getItem(sessionStorage.key(i))).nombre == nom) ? flag = 2: flag = flag;
+        if(flag == 2){
+            Swal.fire({
+                text: "Ya existe un equipo con ese nombre. Introduzca otro nombre para continuar."
+            });
+        }
+        if(flag == 1){
+            Swal.fire({
+                text: "Ese codigo ya ha sido cargado. Introduzca un nuevo codigo para proseguir."
+            });
+        }
+    }
+
+    return flag;
 }
 
 function guardarSession(){
+    if(!validarGuardar()){
+        if(!validadRepetidos()){
+            cargarSession();
+        }
+    }
+}
+
+function cargarSession(){
     if(tipo.value == "Repuesto"){
         let rep = guardarRepuesto();
         sessionStorage.setItem(rep.codigo, JSON.stringify(rep));
