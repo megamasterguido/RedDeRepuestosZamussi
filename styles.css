@@ -19,7 +19,7 @@ body{
 
 #formulario button{
     width: 12vw;
-    height: 3vw;
+    height: 4vw;
 }
 
 #formulario div input{
@@ -78,4 +78,12 @@ body{
     width: 5vw;
     height: 2vw;
     margin-right: 20vw;
+}
+
+.cuadroArt{
+    border: solid;
+}
+
+#guardarLocal{
+    visibility: hidden;
 }

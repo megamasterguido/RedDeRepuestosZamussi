@@ -9,7 +9,7 @@ class Equipo{
 }
 
 class Repuesto{
-    constructor(nombre, fabricante, codigo, esOriginal, originales, copias, alternativos, alternativoDe, equipos){
+    constructor(nombre, fabricante, codigo, esOriginal, originales, copias, alternativos, reemplazos, equipos){
         this.nombre = nombre;
         this.fabricante = fabricante;
         this.codigo = codigo;
@@ -17,14 +17,13 @@ class Repuesto{
         this.originales = originales;
         this.copias = copias;
         this.alternativos = alternativos;
-        this.alternativoDe = alternativoDe;
+        this.reemplazos = reemplazos;
         this.equipos = equipos;
     }
 }
 
 function imprimir(texto){
-    console.log(String(texto));
-    
+    console.log(String(texto));   
 }
 
 let formulario = document.getElementById('formulario');
@@ -37,6 +36,9 @@ let cantidadAlternativos = 0;
 let cantidadReemplazos = 0;
 let cantidadEquipos = 0;
 let cantidadReps = 0;
+
+let arregloRepuestos = [];
+let arregloEquipos = [];
 
 function agregarCopias(){
     let copia = document.createElement("input");
@@ -102,7 +104,7 @@ function familiaOriginalCopias(){
     let existefamiliaCopias = document.getElementById("familiaCopias");
     let existeOriginal = document.getElementById("familiaOriginales");
 
-    if(document.getElementById("esOriginal").value == '1'){
+    if(document.getElementById("esOriginal").value == 'Si'){
         if(existeOriginal){
             existeOriginal.remove();
             cantidadCopias  = 0;
@@ -201,8 +203,8 @@ function agregarEquipos(){
     let equipo = document.createElement("input");
     let equipoLabel = document.createElement("label");
     equipoLabel.innerText = "Introduzca el codigo o el nombre del equipo en el cual va puesto";
-    equipo.id = "reemplazo" + cantidadReemplazos;
-    equipo.type = "reemplazo";
+    equipo.id = "equipo" + cantidadEquipos;
+    equipo.type = "equipo";
     equipoLabel.htmlFor = equipo.id;
 
     let familiaEquipos = document.getElementById("familiaEquipos");
@@ -264,16 +266,17 @@ function eliminarCuadro(cuadro){
 
 function generarFormulario(){
     if (tipo.value == "Repuesto"){
-        formulario.innerHTML = `<div id="cabeza"><div class="bloqueForm"><label for="nombre">Nombre del repuesto</label>
+        formulario.innerHTML = `<div id="cabeza">
+        <div class="bloqueForm"><label for="codigo" id="codigoLabel">Codigo del repuesto*</label>
+        <input type="codigo" id="codigo"></div>
+        <div class="bloqueForm"><label for="nombre" id="nombreLabel">Nombre del repuesto*</label>
         <input type="nombre" id="nombre"></div>
         <div class="bloqueForm"><label for="fabricante">Fabricante del repuesto</label>
         <input type="fabricante" id="fabricante"></div>
-        <div class="bloqueForm"><label for="codigo">Codigo del repuesto</label>
-        <input type="codigo" id="codigo"></div>
         <div class="bloqueForm"><label for="esOriginal"> Es original </label>
         <select name="esOriginal" id="esOriginal" form="formulario">
-            <option value=1> Si </option>
-            <option value=0> No </option>
+            <option value="Si"> Si </option>
+            <option value="No"> No </option>
         </select></div></div>`;
 
         cantidadAlternativos = 0;
@@ -310,14 +313,14 @@ function generarFormulario(){
 
     }
     else {
-        formulario.innerHTML = `<div class="bloqueForm"><label for="nombre">Codigo (si lo posee)</label>
+        formulario.innerHTML = `<div class="bloqueForm"><label for="codigo" id="codigoLabel">Codigo</label>
         <input type="codigo" id="codigo"></div>
-        <div class="bloqueForm"><label for="nombre">Nombre </label>
+        <div class="bloqueForm"><label for="nombre">Nombre*</label>
         <input type="nombre" id="nombre"></div>
-        <div class="bloqueForm"><label for="marca">Marca</label>
-        <input type="marca" id="marca"></div>
         <div class="bloqueForm"><label for="fabrica">Fabrica</label>
         <input type="fabrica" id="fabrica"></div>
+        <div class="bloqueForm"><label for="marca">Marca</label>
+        <input type="marca" id="marca"></div>
         `;
         
         cantidadReps = 0;
@@ -330,6 +333,182 @@ function generarFormulario(){
         let agregarRep = document.getElementById("agregarRep");
         agregarRep.addEventListener("click", agregarReps);
     }
+}
+
+let guardarBoton = document.getElementById("guardar");
+
+guardarBoton.addEventListener("click", guardarSession);
+
+function validarGuardar(){
+    let flag = 0;
+    if(document.getElementById("nombre") == null){
+        document.getElementById("nombreLabel").style.textDecoration = "red underline overline";
+        flag = 1;
+    }
+    if(tipo.value == "Repuesto"){
+        if(document.getElementById("codigo") == null){
+            document.getElementById("codigoLabel").style.textDecoration = "red underline overline";
+            flag = 1;
+        }
+    }
+    
+    if(flag){
+        Swal.fire({
+            text:`Debe completar los campos que posean un '*'.
+            Complete los campos subrayados en rojo para proseguir.`});
+    }
+}
+
+function guardarSession(){
+    if(tipo.value == "Repuesto"){
+        let rep = guardarRepuesto();
+        sessionStorage.setItem(rep.codigo, JSON.stringify(rep));
+        arregloRepuestos = arregloRepuestos.concat(rep);
+        cuadroRepuestos(rep);
+    }
+    else{
+        let eqp = guardarEquipo();
+        sessionStorage.setItem(eqp.nombre, JSON.stringify(eqp));
+        arregloEquipos = arregloEquipos.concat(eqp);
+        cuadroEquipos(eqp);
+    }
+
+    let local = document.getElementById("guardarLocal");
+    local.addEventListener("click", guardarLocal);
+    local.style.visibility = "visible";
+}
+
+function guardarLocal(){
+    let total = sessionStorage.length;
+
+    for(let i = 0; i < total; i++){
+        localStorage.setItem(sessionStorage.key(i), sessionStorage.getItem(sessionStorage.key(i)));
+    }
+}
+
+function guardarRepuesto(){
+    let nombre = document.getElementById("nombre").value;
+    let fabricante = document.getElementById("fabricante").value;
+    let codigo = document.getElementById("codigo").value;
+    let original = document.getElementById("esOriginal").value;
+    let alternativos = [];
+    let reemplazos = [];
+    let equipos = [];
+    let copias = [];
+    let originales = [];
+
+    if(original == "Si"){
+        for(let i = 0; i < cantidadCopias; i++){
+            copias[i] = document.getElementById("copia" + i).value;
+        }
+    }
+    else{
+        for(let i = 0; i < cantidadOriginales; i++){
+            originales[i] = document.getElementById("original" + i).value;
+        }
+    }
+
+    for(let i = 0; i < cantidadAlternativos; i++){
+        alternativos[i] = document.getElementById("alternativo" + i).value;
+    }
+
+    for(let i = 0; i < cantidadReemplazos; i++){
+        reemplazos[i] = document.getElementById("reemplazo" + i).value;
+    }
+    
+    for(let i = 0; i < cantidadEquipos; i++){
+        equipos[i] = document.getElementById("equipo" + i).value;
+    }
+
+    return new Repuesto(nombre, fabricante, codigo, original, originales, copias, alternativos, reemplazos, equipos);
+}
+
+function guardarEquipo(){
+    let nombre = document.getElementById("nombre").value;
+    let fabrica = document.getElementById("fabrica").value;
+    let codigo = document.getElementById("codigo").value;
+    let marca = document.getElementById("marca").value;
+    let reps = [];
+
+    for(let i = 0; i < cantidadReps; i++){
+        reps[i] = document.getElementById("rep" + i).value;
+    }
+
+    return new Equipo(codigo, nombre, marca, fabrica, reps);
+}
+
+function cuadroRepuestos(cod) {
+    let cuad = document.createElement("p");
+    cuad.className = "cuadroArt";
+    cuad.append("Nombre: " + cod.nombre);
+    cuad.append(document.createElement("br"));
+    cuad.append("Fabricante: " + cod.fabricante);
+    cuad.append(document.createElement("br"));
+    cuad.append("Codigo: " + cod.codigo);
+    cuad.append(document.createElement("br"));
+    cuad.append("Original: " + cod.esOriginal);
+    cuad.append(document.createElement("br"));
+    if(cod.esOriginal == "Si"){
+        cuad.append("Copias: ");
+        cuad.append(document.createElement("br")); 
+        cod.copias.forEach(function(rep){
+            cuad.append('.'.repeat(30) + rep);
+            cuad.append(document.createElement("br"));
+        });
+    }
+    else{
+        cuad.append("Originales: ");
+        cuad.append(document.createElement("br")); 
+        cod.originales.forEach(function(rep){
+            cuad.append(".".repeat(30) + rep);
+            cuad.append(document.createElement("br"));
+        });
+    }
+    
+    cuad.append("Alternativos: ");
+    cuad.append(document.createElement("br")); 
+    cod.alternativos.forEach(function(rep){
+        cuad.append(".".repeat(30) + rep);
+        cuad.append(document.createElement("br"));
+    });
+    
+    cuad.append("Reemplazos: ");
+    cuad.append(document.createElement("br")); 
+    cod.reemplazos.forEach(function(rep){
+        cuad.append(".".repeat(30) + rep);
+        cuad.append(document.createElement("br"));
+    });
+    
+    cuad.append("Equipos: ");
+    cuad.append(document.createElement("br")); 
+    cod.equipos.forEach(function(eqp){
+        cuad.append(".".repeat(30) + eqp);
+        cuad.append(document.createElement("br"));
+    });
+
+    document.getElementById("repuestos").append(cuad);
+}
+
+function cuadroEquipos(nom) {
+    let cuad = document.createElement("p");
+    cuad.className = "cuadroArt";
+    cuad.append("Codigo: " + nom.codigo);
+    cuad.append(document.createElement("br"));
+    cuad.append("Nombre: " + nom.nombre);
+    cuad.append(document.createElement("br"));
+    cuad.append("Marca: " + nom.marca);
+    cuad.append(document.createElement("br"));
+    cuad.append("Fabricante: " + nom.fabrica);
+    cuad.append(document.createElement("br"));
+    
+    cuad.append("Repuestos: ");
+    cuad.append(document.createElement("br")); 
+    nom.repuestos.forEach(function(rep){
+        cuad.append(".".repeat(30) + rep);
+        cuad.append(document.createElement("br"));
+    });
+    
+    document.getElementById("equipos").append(cuad);
 }
 
 generarFormulario();

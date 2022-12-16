@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <title>Inicio</title>
-</head>
-<body>
-    <div id="instrucciones">
-        <h1>
-            Instrucciones
-        </h1>
-        <p>
-            
-        </p>
-    </div>
-    <main>
-        <form id="carga" name="cargaManual">
-            <div id="inicio">
-                <label for="tipoArticulo"> Seleccione el tipo de articulo a ingresar </label>
-                <select name="tipo" id="tipoArticulo" form="carga">
-                    <option value="Repuesto">Repuesto</option>
-                    <option value="Electrodomestico">Electrodomestico</option>
-                </select>
-            </div>
-            <fieldset id="formulario">
-            </fieldset>
-        </form>
-        <div id="botones">
-        <button type="submit"> Aceptar </button>
-        <button type="reset"> Cancelar </button>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <title>Inicio</title>
+    </head>
+    <body>
+        <div id="instrucciones">
+            <h1>
+                Instrucciones
+            </h1>
+            <p>
+                
+            </p>
         </div>
-    </main>
-    <script src="script.js"></script>
-</body>
+        <main>
+            <form id="carga" name="cargaManual">
+                <div id="inicio">
+                    <label for="tipoArticulo"> Seleccione el tipo de articulo a ingresar </label>
+                    <select name="tipo" id="tipoArticulo" form="carga">
+                        <option value="Repuesto">Repuesto</option>
+                        <option value="Electrodomestico">Electrodomestico</option>
+                    </select>
+                </div>
+                <fieldset id="formulario">
+                </fieldset>
+            </form>
+            <div id="botones">
+            <button type="submit" id="guardar"> Guardar </button>
+            </div>
+        </main>
+        <section id="repuestos">
+        </section>
+        <section id="equipos">
+        </section>
+        <button type="button" id="guardarLocal"> Guardar localmente </button>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="script.js"></script>
+    </body>
 </html>
